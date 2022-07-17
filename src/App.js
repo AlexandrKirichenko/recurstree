@@ -56,9 +56,35 @@ const Notes = ({ id, children }) => {
 
 function App() {
   const [notes,setNotes] = useState([]);
+  
+  const handleChange = (e) => {
+    setValue(e.target.value)
+  }
+  
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') addNode();
+  };
+  
+  const removeNote = (id) => {
+    setNotes(notes.filter(note => note.id !== id))
+  }
+  
+  const addNode = () => {
+    if (value) {
+      setNotes([...notes, {
+        id: Date.now(),
+        parentId: 0,
+        title: value,
+        replies: []
+      }]);
+      setValue('');
+    }
+  };
+  
   return (
     <div>
       <Notes {...root}/>
+      <InputNode value={value} onChange={handleChange} onKeyDown={handleKeyDown} placeholder='Type here...' />
     </div>
   );
 }
